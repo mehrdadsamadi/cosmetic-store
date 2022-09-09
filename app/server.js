@@ -5,9 +5,11 @@ const createError = require('http-errors');
 const swaggerUI = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
 const cors = require('cors');
+const cron = require('node-cron');
 
 const http = require('http');
 const path = require('path');
+const fs = require('fs');
 
 const { AllRoutes } = require('./router/router');
 
@@ -26,8 +28,18 @@ module.exports = class Application {
     }
 
     configApplication() {
+        let accessLogStream = fs.createWriteStream(path.join(__dirname, 'http', 'logs', 'serverErrors.log'), { flags: 'a' })
+        this.#app.use(morgan(":method - :url - :status - :response-time ms", { stream: accessLogStream }))
+
+        // clear log file at 00:00 at Asia/Tehran timezone
+        cron.schedule('0 0 * * *', () => {
+            fs.truncate(path.join(__dirname, 'http', 'logs', 'serverErrors.log'), 0)
+        }, {
+            scheduled: true,
+            timezone: "Asia/Tehran"
+        });
+
         this.#app.use(cors())
-        this.#app.use(morgan("dev"))
         this.#app.use(express.json())
         this.#app.use(express.urlencoded({extended: true}))
         this.#app.use(express.static(path.join(__dirname, "..", "public")))
