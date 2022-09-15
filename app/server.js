@@ -33,7 +33,7 @@ module.exports = class Application {
 
         // clear log file at 00:00 at Asia/Tehran timezone
         cron.schedule('0 0 * * *', () => {
-            fs.truncate(path.join(__dirname, 'http', 'logs', 'serverErrors.log'), 0)
+            fs.writeFileSync(path.join(__dirname, 'http', 'logs', 'serverErrors.log'), '')
         }, {
             scheduled: true,
             timezone: "Asia/Tehran"
@@ -76,7 +76,7 @@ module.exports = class Application {
                   },
                   security: [{bearerAuth: []}]
                 },
-                apis: ["./app/router/**/*.js"],
+                apis: ["./app/router/**/swagger/*.swagger.js"],
               }),
               {explorer: true}
             )

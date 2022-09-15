@@ -1,1 +1,3 @@
 /node_modules
+/app/themes/admin/node_modules
+/app/themes/client/node_modules
