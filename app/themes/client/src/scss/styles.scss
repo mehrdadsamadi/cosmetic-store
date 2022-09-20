@@ -1,0 +1,15 @@
+@import "./transitions";
+@import "./fonts";
+
+* {
+    box-sizing: border-box;
+    font-family: Dana;
+}
+
+p {
+    margin: 0 !important;
+}
+
+html {
+    scroll-behavior: smooth;
+}

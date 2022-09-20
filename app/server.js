@@ -62,7 +62,7 @@ module.exports = class Application {
                   },
                   servers: [
                     {
-                      url: `http://localhost:${this.#PORT}`,
+                      url: `${process.env.BASE_URL}:${this.#PORT}`,
                     },
                   ],
                   components: {
@@ -85,7 +85,7 @@ module.exports = class Application {
 
     createServer() {
         http.createServer(this.#app).listen(this.#PORT, () => {
-            console.log(`run -> http://localhost:${this.#PORT}`);
+            console.log(`run -> ${process.env.BASE_URL}:${this.#PORT}`);
         })
     }
 
